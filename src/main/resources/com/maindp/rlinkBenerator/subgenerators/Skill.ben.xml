@@ -1,0 +1,25 @@
+<setup xmlns="https://www.benerator.de/schema/3.1.0-jdk-11"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://www.benerator.de/schema/3.1.0-jdk-11 benerator-3.1.0-jdk-11.xsd">
+
+    <echo>
+        Populates 'Skill' table
+    </echo>
+
+    <bean id="job" class="com.maindp.rlinkBenerator.job.JobKeySkillsGenerator"/>
+    <bean id="sentence" class="com.maindp.rlinkBenerator.lorem.SentenceGenerator"/>
+    <bean id="date" class="com.maindp.rlinkBenerator.date.CurrentTimestampGenerator"/>
+
+    <generate type="Skill" count="12" consumer="db">
+        <comment>Оставляем генерацию id на стороне БД, т.к. используем sequence</comment>
+        <id name="id" mode="ignored"/>
+
+        <attribute name="name" generator="JobKeySkillsGenerator" validator="UniqueValidator"/>
+
+        <attribute name="description" generator="SentenceGenerator"/>
+
+        <reference name="skillTypeId" targetType="SkillType" source="db"/>
+
+        <attribute name="updatedAt" generator="CurrentTimestampGenerator"/>
+    </generate>
+</setup>

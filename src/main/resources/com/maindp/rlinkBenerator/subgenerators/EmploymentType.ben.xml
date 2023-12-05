@@ -1,0 +1,23 @@
+<setup xmlns="https://www.benerator.de/schema/3.1.0-jdk-11"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://www.benerator.de/schema/3.1.0-jdk-11 benerator-3.1.0-jdk-11.xsd">
+
+    <echo>
+        Populates 'EmploymentType' table
+    </echo>
+
+    <bean id="date" class="com.maindp.rlinkBenerator.date.CurrentTimestampGenerator"/>
+
+    <generate type="EmploymentType" count="2" consumer="db">
+        <comment>Оставляем генерацию id на стороне БД, т.к. используем sequence</comment>
+        <id name="id" mode="ignored"/>
+
+        <comment>Берём тип занятости из csv файла</comment>
+        <variable name="EmploymentType" source="../prepared-data/EmploymentType.csv" distribution="increment"/>
+
+        <attribute name="name" type="string" script="EmploymentType"/>
+
+        <attribute name="description" type="string" script="EmploymentType"/>
+        <attribute name="updatedAt" generator="CurrentTimestampGenerator"/>
+    </generate>
+</setup>

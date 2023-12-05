@@ -1,0 +1,49 @@
+<setup xmlns="https://www.benerator.de/schema/3.1.0-jdk-11"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://www.benerator.de/schema/3.1.0-jdk-11 benerator-3.1.0-jdk-11.xsd">
+
+    <import domains="person,address"/>
+
+    <echo>
+        Populates 'UserInCompany' tables
+    </echo>
+
+    <bean id="date" class="com.maindp.rlinkBenerator.date.CurrentTimestampGenerator"/>
+
+    <comment>Устраняю проблему с конвертацией в enum типы</comment>
+    <execute target="db">
+        alter table "UserInCompany"
+        alter column status type varchar using status::varchar;
+
+        alter table "UserInCompany"
+        alter column role type varchar using role::varchar;
+
+        alter table "UserInCompany"
+        alter column initiator type varchar using initiator::varchar;
+    </execute>
+
+    <generate type="UserInCompany" count="20" consumer="db">
+        <id name="id" mode="ignored"/>
+
+        <reference name="companyId" targetType="Company" source="db"/>
+
+        <reference name="userId" targetType="User" source="db" distribution="increment" cyclic="true"/>
+
+        <attribute name="status" values="'PENDING', 'ACTIVE'"/>
+        <attribute name="role" values="'MEMBER', 'ADMIN', 'OWNER'"/>
+        <attribute name="initiator" values="'USER', 'COMPANY'"/>
+
+        <attribute name="updatedAt" generator="CurrentTimestampGenerator"/>
+    </generate>
+
+    <execute target="db">
+        alter table "UserInCompany"
+        alter column status type "UserStatusInCompany" using status::"UserStatusInCompany";
+
+        alter table "UserInCompany"
+        alter column role type "UserRoleInCompany" using role::"UserRoleInCompany";
+
+        alter table "UserInCompany"
+        alter column initiator type "CompanyInviteInitiator" using initiator::"CompanyInviteInitiator";
+    </execute>
+</setup>

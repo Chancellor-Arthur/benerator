@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<setup xmlns="https://www.benerator.de/schema/3.0.1-jdk-11"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://www.benerator.de/schema/3.0.1-jdk-11 benerator-3.0.1-jdk-11.xsd"
+       defaultEncoding="UTF-8"
+       defaultDataset="US"
+       defaultLocale="us_US"
+       defaultLineSeparator="\r\n">
+
+    <echo>
+        Populates a database
+    </echo>
+
+    <include uri="db.properties"/>
+
+    <echo>defining a database that will be referred by the id 'db' later</echo>
+    <database id="db"
+              url="{db.connection.url}"
+              driver="{db.driver}"
+              schema="{db.connection.schema}"
+              user="{db.connection.username}"
+              password="{db.connection.password}"
+              acceptUnknownColumnTypes="true"/>
+
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/SpecializationGroup.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/Specialization.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/UserProfile.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/EmploymentType.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/SkillType.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/Skill.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/Company.ben.xml"/>
+    <include uri="src/main/resources/com/maindp/rlinkBenerator/subgenerators/UserInCompany.ben.xml"/>
+</setup>

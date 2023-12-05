@@ -1,0 +1,26 @@
+<setup xmlns="https://www.benerator.de/schema/3.1.0-jdk-11"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://www.benerator.de/schema/3.1.0-jdk-11 benerator-3.1.0-jdk-11.xsd">
+
+    <echo>
+        Populates 'SkillType' table
+    </echo>
+
+    <bean id="date" class="com.maindp.rlinkBenerator.date.CurrentTimestampGenerator"/>
+
+    <generate type="SkillType" count="2" consumer="db">
+        <comment>Оставляем генерацию id на стороне БД, т.к. используем sequence</comment>
+        <id name="id" mode="ignored"/>
+
+        <comment>Берём тип занятости из csv файла</comment>
+        <variable name="SkillTypeName" values="'Хард скилы', 'Софт скилы'" distribution="increment"/>
+
+        <attribute name="name" type="string" script="SkillTypeName"/>
+
+        <variable name="SkillTypeDescription" values="'Технические навыки (hard skills)', 'Мягкие навыки (soft skills)'"
+                  distribution="increment"/>
+
+        <attribute name="description" type="string" script="SkillTypeDescription"/>
+        <attribute name="updatedAt" generator="CurrentTimestampGenerator"/>
+    </generate>
+</setup>
